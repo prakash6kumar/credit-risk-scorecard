@@ -1,0 +1,13 @@
+# Data Files
+data/raw/
+data/processed/*.rds
+data/processed/*.csv
+
+# RStudio files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# MacOS system files
+.DS_Store
