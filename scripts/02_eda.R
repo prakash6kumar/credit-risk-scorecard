@@ -78,3 +78,19 @@ ggplot(loan_data, aes(x = as.factor(is_bad), y = int_rate, fill = as.factor(is_b
        y = "Interest Rate (%)") +
   guides(fill = "none")
 
+loan_data %>%
+  group_by(grade) %>%
+  summarise(
+    volume = n(),
+    default_rate = mean(is_bad)
+  )
+
+state_risk <- loan_data %>%
+  group_by(addr_state) %>%
+  summarise(
+    risk_score = mean(is_bad),
+    total_loans = n()
+  ) %>%
+  arrange(desc(risk_score)) # Sorts from highest risk to lowest
+
+head(state_risk)
