@@ -78,6 +78,7 @@ ggplot(loan_data, aes(x = as.factor(is_bad), y = int_rate, fill = as.factor(is_b
        y = "Interest Rate (%)") +
   guides(fill = "none")
 
+# Default rates by grade
 loan_data %>%
   group_by(grade) %>%
   summarise(
@@ -85,6 +86,7 @@ loan_data %>%
     default_rate = mean(is_bad)
   )
 
+# Default rates by state ranked
 state_risk <- loan_data %>%
   group_by(addr_state) %>%
   summarise(
