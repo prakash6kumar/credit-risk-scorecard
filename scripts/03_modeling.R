@@ -87,3 +87,30 @@ ggplot(importance, aes(x = reorder(Variable, Importance), y = Importance)) +
        x = "Variable",
        y = "Absolute z-value")
 
+# Perform a Decile Analysis
+decile_analysis <- test_predictions %>%
+  mutate(decile = ntile(prob_default,10)) %>%
+  group_by(decile) %>%
+  summarise(
+    n_loans = n(),
+    avg_prob = mean(prob_default),
+    actual_default_rate = mean(is_bad)
+  )
+print(decile_analysis)
+
+# Create a credit score
+test_predictions <- test_predictions %>%
+  mutate(
+    credit_score = 850 - (prob_default * 550)
+  )
+
+test_predictions %>%
+  select(is_bad, prob_default, credit_score) %>%
+  head(10)
+
+# Export data for Tableau
+tableau_data <- test_predictions %>%
+  select(is_bad, prob_default, credit_score, int_rate, dti, annual_inc, grade) %>%
+  mutate(decile = ntile(prob_default,10))
+write.csv(tableau_data,"data/tableau_export.csv", row.names = FALSE)
+
